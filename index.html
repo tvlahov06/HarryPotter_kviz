@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Harry Potter Kviz</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 20px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+    .question {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      background: #f0c419;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .correct {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: #e53935;
+      font-weight: bold;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid #444;
+      margin: 15px 0;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+     display: block;
+     margine-bottom: 10px;
+     line-height: 1;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧙 Harry Potter Kviz</h1>
+    <div id="quiz"></div>
+  </div>
+
+  <script>
+    const pitanja = [
+      {
+    tekst: "Kako se zove škola koju pohađa Harry Potter?",
+    opcije: ["Durmstrang", "Beauxbatons", "Hogwarts", "Ilvermorny"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je ubio Albusa Dumbledorea?",
+    opcije: ["Voldemort", "Bellatrix Lestrange", "Severus Snape", "Draco Malfoy"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koje boje je bio leteći auto obitelji Weasley?",
+    opcije: ["Plava", "Crvena", "Zelena", "Bijela"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je bio pravi vlasnik Elderskog štapa prije Dumbledorea?",
+    opcije: ["Gellert Grindelwald", "Gregorovich", "Lucius Malfoy", "Tom Riddle"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji horcrux je bio uništen u Tajnoj odaji?",
+    opcije: ["Nagini", "Dnevnik", "Prsten", "Šal"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji predmet predaje Severus Snape u prvim godinama?",
+    opcije: ["Zaštitu od mračnih sila", "Napitke", "Transfiguraciju", "Čarolije"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove sestra Albusa Dumbledorea?",
+    opcije: ["Ariana", "Arabella", "Amelia", "Augusta"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji broj je bio na ulaznim vratima u kuću Dursleyjevih?",
+    opcije: ["4", "12", "7", "9"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja čudovišna biljka skoro zadavi Rona i Hermionu u prvom filmu?",
+    opcije: ["Mandragora", "Đavolja zamka", "Bič-biljka", "Grmlje smrtonosne vrbe"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koja životinja simbolizira kuću Hufflepuff?",
+    opcije: ["Jazavac", "Orao", "Zmija", "Lav"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove Harryjeva sova?",
+    opcije: ["Errol", "Hedwig", "Crookshanks", "Scabbers"],
+    tocan: "B"
+  },
+  {
+    tekst: "Tko je direktor Hogwartsa nakon Dumbledoreove smrti?",
+    opcije: ["Snape", "McGonagall", "Umbridge", "Lupin"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kojeg je oblika Harryjev Patronus?",
+    opcije: ["Vidra", "Sova", "Jelen", "Vuk"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koji je broj platforme za Hogwarts Express?",
+    opcije: ["9", "10", "9 i ¾", "11"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je bio prvi vlasnik plašta nevidljivosti?",
+    opcije: ["Harry", "James Potter", "Ignotus Peverell", "Sirius Black"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koja kuća je poznata po hrabrosti?",
+    opcije: ["Hufflepuff", "Ravenclaw", "Slytherin", "Gryffindor"],
+    tocan: "D"
+  },
+  {
+    tekst: "Tko je stvorio dnevnik kao horcrux?",
+    opcije: ["Tom Riddle", "Lucius Malfoy", "Bellatrix", "Grindelwald"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je ljubimac Rona Weasleyja?",
+    opcije: ["Sova", "Pas", "Štakor", "Mačka"],
+    tocan: "C"
+  },
+  {
+    tekst: "Što znači 'Avada Kedavra'?",
+    opcije: ["Oživljavanje", "Iscrpljivanje", "Smrt", "Nestanak"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koja čarolija se koristi za razoružavanje?",
+    opcije: ["Expelliarmus", "Stupefy", "Alohomora", "Crucio"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove goblin koji vodi Gringotts?",
+    opcije: ["Griphook", "Kreacher", "Dobby", "Winky"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je bio prvi učitelj Obrane od mračnih sila?",
+    opcije: ["Quirrell", "Lockhart", "Lupin", "Snape"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove zatvor za čarobnjake?",
+    opcije: ["Azkaban", "Nurmengard", "Gringotts", "Durmstrang"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je oblik Patronusa Severusa Snapea?",
+    opcije: ["Jelen", "Kuna", "Košuta", "Zmija"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je ubio Dobbyja?",
+    opcije: ["Lucius Malfoy", "Voldemort", "Bellatrix Lestrange", "Fenrir Greyback"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koje magično biće je Hagrid pokušao uzgajati ilegalno?",
+    opcije: ["Zmaja", "Jednoroga", "Testrala", "Baziliska"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove ulica u kojoj se nalazi Gringotts banka?",
+    opcije: ["Noćna ulica", "Čarobna avenija", "Ulica Pokrov", "Dijagonalna ulica"],
+    tocan: "D"
+  },
+  {
+    tekst: "Tko je bio vlasnik Dnevnog proroka?",
+    opcije: ["Rita Skeeter", "Xenophilius Lovegood", "Lucius Malfoy", "Cornelius Fudge"],
+    tocan: "C"
+  },
+  {
+    tekst: "Kako se zove dom obitelji Black?",
+    opcije: ["Grimmauld Place 12", "Privet Drive 4", "Spinner’s End", "The Burrow"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko postaje Ministar Magije na kraju serijala?",
+    opcije: ["Kingsley Shacklebolt", "Arthur Weasley", "Percy Weasley", "Harry Potter"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja čarolija otključava vrata?",
+    opcije: ["Lumos", "Alohomora", "Expelliarmus", "Nox"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove zmaj kojeg Harry jaše u Gringottsu?",
+    opcije: ["Norbert", "Romanian Longhorn", "Ukrajinski Željezni trbuh", "Mađarski repokušnjak"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je bio prvi horcrux koji je Harry uništio?",
+    opcije: ["Prsten", "Dnevnik", "Nagini", "Kupa Helge Hufflepuff"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove metla koju Harry koristi u prvoj godini?",
+    opcije: ["Nimbus 2000", "Nimbus 2001", "Vatreni munjeviti", "Thunderbolt"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja kuća na Hogwartsu cijeni mudrost?",
+    opcije: ["Hufflepuff", "Ravenclaw", "Slytherin", "Gryffindor"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kojom životinjom se Petar Petigrew pretvara?",
+    opcije: ["Mačka", "Sova", "Štakor", "Pas"],
+    tocan: "C"
+  },
+  {
+    tekst: "Kako se zove Harryjev sin?",
+    opcije: ["James Sirius", "Albus Severus", "Fred Gideon", "Scorpius Hyperion"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koja čarolija stvara svjetlo na vrhu štapića?",
+    opcije: ["Alohomora", "Expelliarmus", "Lumos", "Accio"],
+    tocan: "C"
+  },
+  {
+    tekst: "Kako se zove najopasnija knjiga u trećoj godini?",
+    opcije: ["Knjiga čudovišta", "Mračna magija", "Živa knjiga", "Dementorski dnevnik"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko posjeduje Dnevni prorok?",
+    opcije: ["Lucius Malfoy", "Ministarstvo Magije", "Cornelius Fudge", "Ne zna se"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koji predmet pomaže Hermioni putovati kroz vrijeme?",
+    opcije: ["Zrcalo sudbine", "Vrijemenovratitelj", "Sat proročanstva", "Vremenski kamen"],
+    tocan: "B"
+  },
+  {
+    tekst: "Tko je Tom Riddle?",
+    opcije: ["Otac Harryja", "Pravi Voldemort", "Učitelj napitaka", "Poljubac dementora"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji učenik umire na Turniru triju čarobnjaka?",
+    opcije: ["Harry", "Krum", "Cedric Diggory", "Fleur"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koji predmet koristi Harry da pronađe horcruxe?",
+    opcije: ["Zrcalo", "Zlatnik", "Zlatni škrin", "Zlatni medaljon"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koja je osnovna čarolija za letenje?",
+    opcije: ["Levicorpus", "Wingardium Leviosa", "Accio", "Aresto Momentum"],
+    tocan: "B"
+  },
+  {
+    tekst: "Što se nalazi u Zabranjenoj šumi?",
+    opcije: ["Dementori", "Trolovi", "Centauri", "Basilisk"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je Harryjev kum?",
+    opcije: ["Remus Lupin", "Arthur Weasley", "Sirius Black", "Dumbledore"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koji predmet Hermiona najviše voli?",
+    opcije: ["Vremenski okret", "Knjige", "Zlatna značka", "Štap"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koja knjiga sadrži zakone čarobnog svijeta?",
+    opcije: ["Magijska pravila", "Kodeks čarobnjaka", "Pravila magije", "Statut tajnosti"],
+    tocan: "D"
+  },
+  {
+    tekst: "Tko postavlja Tročarobnjačko natjecanje?",
+    opcije: ["Dumbledore", "Barty Crouch Jr.", "Igor Karkaroff", "Ministarstvo"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji učenik iz Ravenclawa pomaže Harryju u Potrebnoj sobi?",
+    opcije: ["Cho Chang", "Luna Lovegood", "Padma Patil", "Roger Davies"],
+    tocan: "B"
+  },
+  {
+    tekst: "Tko je ubio Freda Weasleyja?",
+    opcije: ["Bellatrix", "Fenrir Greyback", "Smrtonoša", "Ne zna se točno"],
+    tocan: "D"
+  },
+  {
+    tekst: "Što je Felix Felicis?",
+    opcije: ["Napadna čarolija", "Srećonosni napitak", "Vjetrovita biljka", "Zabranjeni predmet"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove vilenjak kojeg Hermiona oslobađa?",
+    opcije: ["Kreacher", "Hokey", "Winky", "Dobby"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koja čarolija uzrokuje bol?",
+    opcije: ["Crucio", "Avada Kedavra", "Imperio", "Stupefy"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja je najjača Zabranjena čarolija?",
+    opcije: ["Imperio", "Avada Kedavra", "Crucio", "Sectumsempra"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove Harryjeva tetka?",
+    opcije: ["Petunia", "Marge", "Vernona", "Minerva"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji predmet koristi Snape za pohranu sjećanja?",
+    opcije: ["Penseive", "Štap", "Ogledalo", "Kristalna kugla"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja je Voldemortova majka?",
+    opcije: ["Merope Gaunt", "Bellatrix", "Narcissa", "Andromeda"],
+    tocan: "A"
+  },
+  {
+    tekst: "Gdje je Harry rođen?",
+    opcije: ["Godric’s Hollow", "Privet Drive", "Hogsmeade", "Otok Man"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je zaručen za Tonks?",
+    opcije: ["Charlie", "Sirius", "Remus Lupin", "Kingsley"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koji predmet štiti sjećanja?",
+    opcije: ["Pensieve", "Zrcalo", "Horcrux", "Snitch"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove zmaj kojeg Hagrid posjeduje?",
+    opcije: ["Norbert", "Hungarian Horntail", "Ironbelly", "Fluffy"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja biljka vrišti kada se izvadi iz zemlje?",
+    opcije: ["Mandragora", "Glog", "Đavolja zamka", "Vresak"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je oblik Boggarta za Nevillea?",
+    opcije: ["Zmija", "Snape", "Pauk", "Voldemort"],
+    tocan: "B"
+  },
+  {
+    tekst: "Što koristiš da se teleportiraš?",
+    opcije: ["Portkey", "Apparition", "Time Turner", "Floo prah"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji predmet je simbol Slytherina?",
+    opcije: ["Zmija", "Zmija i štit", "Mač", "Prsten"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko predaje Letenje u prvoj godini?",
+    opcije: ["Madam Pomfrey", "Madam Hooch", "McGonagall", "Snape"],
+    tocan: "B"
+  },
+  {
+    tekst: "Tko vodi Zbor žaba u Hogwartsu?",
+    opcije: ["Flitwick", "Dumbledore", "Hooch", "Sprout"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji profesor nosi turban?",
+    opcije: ["Lockhart", "Snape", "Quirrell", "Hooch"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koja je vještina potrebna za Parsel jezik?",
+    opcije: ["Čitanje runa", "Telepatija", "Razgovor sa zmijama", "Levitacija"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko nosi medaljon kao horcrux u šumi?",
+    opcije: ["Ron", "Harry", "Hermiona", "Kreacher"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji horcrux uništava Ron?",
+    opcije: ["Medaljon", "Prsten", "Pehar", "Nagini"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je simbol Darova Smrti?",
+    opcije: ["Krug", "Trokut", "Linija", "Trokut, krug i linija"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koji horcrux je uništen mačem Gryffindora?",
+    opcije: ["Dnevnik", "Prsten", "Medaljon", "Pečat"],
+    tocan: "C"
+  },
+  {
+    tekst: "Kako se zove vila koja pomaže Harryju i prijateljima u Tajnoj odaji?",
+    opcije: ["Dobby", "Kreacher", "Winky", "Fawkes"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji lik nosi nadimak 'Mad-Eye'?",
+    opcije: ["Sirius Black", "Alastor Moody", "Severus Snape", "Remus Lupin"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove obitelj s kojom Harry živi prije nego što ode u Hogwarts?",
+    opcije: ["Weasley", "Potter", "Dursley", "Black"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je profesor Obrane od mračnih sila u četvrtoj godini?",
+    opcije: ["Lupin", "Lockhart", "Snape", "Moody"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koji predmet Hermiona koristi da prisustvuje više predmeta u isto vrijeme?",
+    opcije: ["Vrijemenovratitelj", "Zrcalo", "Zlatna značka", "Čarobni šešir"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koja je boja Harryjevog Grimmauld Place kućnog broja?",
+    opcije: ["Crvena", "Bijela", "Siva", "Plava"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koji predmet Hogwartsu donosi Mač Gryffindora?",
+    opcije: ["Goblin Griphook", "Hagrid", "Hermiona", "Ron"],
+    tocan: "C"
+  },
+  {
+    tekst: "Koja je boja kape za odabir kuće?",
+    opcije: ["Crvena", "Žuta", "Siva", "Plava"],
+    tocan: "D"
+  },
+  {
+    tekst: "Kako se zove zmajeva vrsta iz rumunjske?",
+    opcije: ["Hungarian Horntail", "Norbert", "Ukrainian Ironbelly", "Chinese Fireball"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je zauvijek vezan za život Harryja kao njegov zaštitnik?",
+    opcije: ["Sirius Black", "Severus Snape", "Dumbledore", "Lily Potter"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koja je čarolija za tihi hod?",
+    opcije: ["Muffliato", "Silencio", "Quietus", "Nox"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji je oblik Patronusa Hermione?",
+    opcije: ["Zec", "Vidra", "Košuta", "Mačka"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove brat Voldemorta?",
+    opcije: ["Lucius", "Marvolo", "Tom Riddle Jr.", "Voldemort nema brata"],
+    tocan: "D"
+  },
+  {
+    tekst: "Koji predmet Hermiona nosi na vratima da otvori Tajnu odaju?",
+    opcije: ["Ključ", "Dnevnik Toma Riddla", "Kamen", "Prsten"],
+    tocan: "B"
+  },
+  {
+    tekst: "Koji je nadimak Fred i George Weasley imali u školi?",
+    opcije: ["Zločesti blizanci", "Dvostruki blizanci", "Čarobni blizanci", "Šaljivdžije"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove kletva koja prisiljava nekoga da radi protiv svoje volje?",
+    opcije: ["Imperius", "Cruciatus", "Avada Kedavra", "Expelliarmus"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je čuvar ključeva u Hogwartsu?",
+    opcije: ["Rubeus Hagrid", "Madam Pomfrey", "Argus Filch", "Firenze"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je naziv za Veliku dvoranu u Hogwartsu gdje se jedu obroci?",
+    opcije: ["Zborna dvorana", "Velika sala", "Glavna dvorana", "Čarobna dvorana"],
+    tocan: "B"
+  },
+  {
+    tekst: "Kako se zove vođa smrtonošaca?",
+    opcije: ["Lucius Malfoy", "Bellatrix Lestrange", "Voldemort", "Fenrir Greyback"],
+    tocan: "C"
+  },
+  {
+    tekst: "Tko je vodio kuću Hufflepuff?",
+    opcije: ["Professor Sprout", "Professor Flitwick", "Professor McGonagall", "Professor Slughorn"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji lik posjeduje nevidljivi plašt?",
+    opcije: ["Harry Potter", "Ron Weasley", "Hermiona Granger", "Draco Malfoy"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji je oblik zmaja kojeg Hagrid nije uspio sakriti?",
+    opcije: ["Norbert", "Norberta", "Norbertina", "Norbertha"],
+    tocan: "A"
+  },
+  {
+    tekst: "Tko je zadužen za Gryffindor kuću u vrijeme Harryja?",
+    opcije: ["Professor McGonagall", "Professor Snape", "Professor Flitwick", "Professor Lupin"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji predmet koristi Harry da se zaštiti od Dementora?",
+    opcije: ["Expecto Patronum", "Expelliarmus", "Stupefy", "Protego"],
+    tocan: "A"
+  },
+  {
+    tekst: "Kako se zove mjesto gdje se nalazi Hogwarts?",
+    opcije: ["Škotska", "Engleska", "Irska", "Velš"],
+    tocan: "A"
+  },
+  {
+    tekst: "Koji lik koristi lažni identitet Mad-Eye Moodyja?",
+    opcije: ["Barty Crouch Jr.", "Lucius Malfoy", "Severus Snape", "Peter Pettigrew"],
+    tocan: "A"
+  }
+       ];
+
+    const pitanjaOdabrana = pitanja.sort(() => 0.5 - Math.random()).slice(0, 20);
+    let index = 0;
+    let bodovi = 0;
+    const odgovori = [];
+
+    function prikaziPitanje() {
+      const q = pitanjaOdabrana[index];
+      const container = document.getElementById("quiz");
+      container.innerHTML = `<div class="question"><h3>${index + 1}. ${q.tekst}</h3></div>`;
+      const opcije = q.opcije.map((o, i) => {
+        const slovo = String.fromCharCode(65 + i);
+        return `<label><input type="radio" name="odg" value="${slovo}"> ${slovo}) ${o}</label><br>`;
+      }).join('');
+      container.innerHTML += opcije + `<br><button onclick="provjeri()">Pošalji odgovor</button>`;
+    }
+
+    function provjeri() {
+      const selektirano = document.querySelector('input[name=odg]:checked');
+      if (!selektirano) return;
+      const odgovor = selektirano.value;
+      const tocan = pitanjaOdabrana[index].tocan;
+      if (odgovor === tocan) bodovi++;
+      odgovori.push({ tekst: pitanjaOdabrana[index].tekst, tocan, odgovor });
+      index++;
+      if (index < pitanjaOdabrana.length) prikaziPitanje();
+      else prikaziRezultat();
+    }
+
+    function prikaziRezultat() {
+      const container = document.getElementById("quiz");
+      container.innerHTML = `<h2>Rezultat: ${bodovi} / ${pitanjaOdabrana.length}</h2><div id='pregled'></div>`;
+      const pregled = odgovori.map((o, i) => {
+        const odgIndex = ["A", "B", "C", "D"].indexOf(o.odgovor);
+        const tocIndex = ["A", "B", "C", "D"].indexOf(o.tocan);
+        const korisnicki = odgIndex >= 0 ? `${o.odgovor}) ${pitanjaOdabrana[i].opcije[odgIndex]}` : "Nije odgovoreno";
+        const tocni = `${o.tocan}) ${pitanjaOdabrana[i].opcije[tocIndex]}`;
+        return `
+          <div>
+            <strong>${i + 1}. ${o.tekst}</strong><br>
+            Tvoj odgovor: <span class="${o.odgovor === o.tocan ? 'correct' : 'incorrect'}">${korisnicki}</span><br>
+            Točan odgovor: <span class="correct">${tocni}</span>
+          </div>
+        `;
+      }).join('<hr>');
+      document.getElementById("pregled").innerHTML = pregled;
+      container.innerHTML += `<br><button onclick="location.reload()">🔁 Pokreni ponovo</button>`;
+    }
+
+    prikaziPitanje();
+  </script>
+</body>
+</html>
